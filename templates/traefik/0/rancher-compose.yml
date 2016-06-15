@@ -1,9 +1,9 @@
 .catalog:
   name: Traefik
-  version: v1.0.0-beta.555-rancher1
+  version: v1.0.0-rc2
   description: |
     (Experimental) Traefik active load balancer.
-  minimum_rancher_version: v0.59.0
+  minimum_rancher_version: v1.0.0
   maintainer: "Raul Sanchez <rawmind@gmail.com>"
   uuid: traefik-0
   questions:
@@ -11,13 +11,19 @@
       description: "Traefik http public port to listen."
       label: "Http port:"
       required: true
-      default: 8080
+      default: 80
+      type: "int"
+    - variable: "https_port"
+      description: "Traefik https public port to listen."
+      label: "Https port:"
+      required: true
+      default: 443
       type: "int"
     - variable: "admin_port"
       description: "Traefik admin public port to listen."
       label: "Admin port:"
       required: true
-      default: 8000 
+      default: 8080
       type: "string"
     - variable: "refresh_interval"
       description: "Interval to poll/apply configuration changes." 
@@ -25,6 +31,29 @@
       required: true
       default: 60 
       type: "int"
+    - variable: "tomlConfig"
+      description: "TOML config for traeffik https://docs.traefik.io/toml/"
+      label: "toml config"
+      required: true
+      type: "multiline"
+      default: |
+        ###############################################################
+        #traefik toml configuration
+        ################################################################
+        [entryPoints]
+          [entryPoints.http]
+            address = ":80"
+          [entryPoints.https]
+            address = ":443"
+        # Enable the api backend
+        [web]
+          address = ":8080"
+        # Enable Consul Catalog configuration backend
+        [backends]
+          [consulCatalog]
+            endpoint = "127.0.0.1:8500"
+            domain = "consul.localhost"
+            prefix = "traefik"
 traefik:
   retain_ip: true
   health_check:
@@ -34,3 +63,7 @@ traefik:
     request_line: 'GET /dashboard/# HTTP/1.0'
     healthy_threshold: 2
     response_timeout: 5000
+  metadata:
+    config:
+      tomlConfig: |
+        ${tomlConfig}
