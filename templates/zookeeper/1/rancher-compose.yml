@@ -47,11 +47,7 @@
       description: "Tick time length"
       label: "Zk tick time (ms):"
       required: true
-<<<<<<< HEAD
       default: 2000
-=======
-      default: 5
->>>>>>> 09b404c... Upgrade zookeeper to version 3.4.8
       type: "int"
     - variable: "zk_interval"
       description: "Interval to poll/apply configuration changes. 0 to disable, reconfiguration will be done when you restart zk nodes"

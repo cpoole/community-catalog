@@ -14,8 +14,6 @@ traefik:
   tty: true
   log_opt: {}
   image: rawmind/alpine-traefik:1.0.0-beta.771
-  default_cert: prueba
->>>>>>> beff2c0... add ssl certificate option to traefik
   environment:
   - TRAEFIK_HTTP_PORT=${http_port}
   - TRAEFIK_HTTPS_PORT=${https_port}
